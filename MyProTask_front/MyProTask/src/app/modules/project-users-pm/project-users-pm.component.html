@@ -1,0 +1,234 @@
+<app-aside></app-aside>
+<app-header></app-header>
+
+<section class="overflow">
+  <div class="delete-project">
+    <h1>{{ project.name }}</h1>
+    <button class="delete-project" (click)="openModal3()">Delete Project</button>
+    <div id="modal3" class="modal3">
+      <div class="modal-content3">
+        <span class="close3" (click)="closeModal3()">&times;</span>
+        <h1>Do you want to delete the project?</h1>
+        <button (click)="updateActiveProjectById(project.idProject)">Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="template four">
+    <ng-container *ngFor="let user of userProjects">
+      <div class="user-div" [style.border]="getUserBorderStyle(user.role.name)" *ngIf="user.role.name != 'manager'">
+        <div class="two ico-photo">
+          <div id="profile-pic" [routerLink]="['/user', user.user.idUser]">
+            <img src="https://firebasestorage.googleapis.com/v0/b/myprotask.appspot.com/o/user-profiles%2F{{ user.user.idUser }}%2Fpfp.png?alt=media&token=71e4361c-7814-4858-896e-cedcaf90980c"
+            onerror="this.onerror=null; this.src='../../../assets/img/profile_pic.png';" alt="" />
+          </div>
+          <i class="bi bi-trash" (click)="openModal2(user.user.idUser)"></i>
+          <div [id]="'modal2-' + user.user.idUser" class="modal2">
+            <div class="modal-content2">
+              <span class="close2" (click)="closeModal2(user.user.idUser)">&times;</span>
+
+              <h1>Do you want to remove <span>{{user.user.name}} {{user.user.lastName}}</span> from the project?</h1>
+              <button (click)="closeModal2(user.user.idUser); openModal4(user.user.idUser)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <p>{{user.user.name}} {{user.user.lastName}}</p>
+        <p>{{ user.user.email }}</p>
+        <p>{{ user.user.das }}</p>
+      </div>
+
+      <div class="user-div" [style.border]="getUserBorderStyle(user.role.name)" *ngIf="user.role.name == 'manager'">
+        <div class="two ico-photo">
+          <div id="profile-pic" [routerLink]="['/user', user.user.idUser]">
+            <img src="https://firebasestorage.googleapis.com/v0/b/myprotask.appspot.com/o/user-profiles%2F{{ user.user.idUser }}%2Fpfp.png?alt=media&token=71e4361c-7814-4858-896e-cedcaf90980c"
+            onerror="this.onerror=null; this.src='../../../assets/img/profile_pic.png';" alt="" />
+          </div>
+        </div>
+        <p>{{user.user.name}} {{user.user.lastName}}</p>
+        <p>{{ user.user.email }}</p>
+        <p>{{ user.user.das }}</p>
+      </div>
+
+      <div [id]="'modal4-' + user.user.idUser" class="modal4">
+        <div class="modal-content4">
+          <span class="close2" (click)="closeModal4(user.user.idUser)">&times;</span>
+
+          <div class="infoUser">
+            <div id="profile-pic" [routerLink]="['/user', user.user.idUser]">
+              <img src="../../assets/img/user.png" alt="" />
+            </div>
+
+            <p>{{ user.user.name }}</p>
+            <p>{{ user.user.das }}</p>
+            <p>{{ user.user.email }}</p>
+          </div>
+
+          <div class="evaluation-block">
+            <div class="evaluation-block" [ngClass]="{ 'border-red': flag1 }">
+              <h4>Individual Work</h4>
+              <p>Please evaluate the member from 1-6 based on their individual work</p>
+              <ul>
+                  <li><span>1-2</span> The member does not fulfill their individual tasks</li>
+                  <li><span>3-4</span> Fulfills tasks but could improve</li>
+                  <li><span>5-6</span> Fulfills tasks excellently</li>
+              </ul>
+              <div class="rating">
+                  <label><input type="radio" name="individual_work" value="1"><span>1</span></label>
+                  <label><input type="radio" name="individual_work" value="2"><span>2</span></label>
+                  <label><input type="radio" name="individual_work" value="3"><span>3</span></label>
+                  <label><input type="radio" name="individual_work" value="4"><span>4</span></label>
+                  <label><input type="radio" name="individual_work" value="5"><span>5</span></label>
+                  <label><input type="radio" name="individual_work" value="6"><span>6</span></label>
+              </div>
+          </div>
+
+          <div class="evaluation-block" [ngClass]="{ 'border-red': flag2 }">
+              <h4>Initiative</h4>
+              <p>Please evaluate the member from 1-6 based on their initiative</p>
+              <ul>
+                  <li><span >1-2</span> Shows no initiative</li>
+                  <li><span >3-4</span> Shows some initiative but could improve</li>
+                  <li><span >5-6</span> Shows great initiative</li>
+              </ul>
+              <div class="rating">
+                  <label><input type="radio" name="initiative" value="1"><span>1</span></label>
+                  <label><input type="radio" name="initiative" value="2"><span>2</span></label>
+                  <label><input type="radio" name="initiative" value="3"><span>3</span></label>
+                  <label><input type="radio" name="initiative" value="4"><span>4</span></label>
+                  <label><input type="radio" name="initiative" value="5"><span>5</span></label>
+                  <label><input type="radio" name="initiative" value="6"><span>6</span></label>
+              </div>
+          </div>
+
+          <div class="evaluation-block" [ngClass]="{ 'border-red': flag3 }">
+              <h4>Problem Resolution</h4>
+              <p>Please evaluate the member from 1-6 based on their problem-solving ability</p>
+              <ul>
+                  <li><span >1-2</span> Has difficulty solving problems</li>
+                  <li><span >3-4</span> Solves problems adequately but could improve</li>
+                  <li><span >5-6</span> Solves problems excellently</li>
+              </ul>
+              <div class="rating">
+                  <label><input type="radio" name="problem_resolution" value="1"><span>1</span></label>
+                  <label><input type="radio" name="problem_resolution" value="2"><span>2</span></label>
+                  <label><input type="radio" name="problem_resolution" value="3"><span>3</span></label>
+                  <label><input type="radio" name="problem_resolution" value="4"><span>4</span></label>
+                  <label><input type="radio" name="problem_resolution" value="5"><span>5</span></label>
+                  <label><input type="radio" name="problem_resolution" value="6"><span>6</span></label>
+              </div>
+          </div>
+
+          <div class="evaluation-block" [ngClass]="{ 'border-red': flag4 }">
+              <h4>Team Work</h4>
+              <p>Please evaluate the member from 1-6 based on their teamwork</p>
+              <ul>
+                  <li><span >1-2</span> The member has a poor team attitude, etc...</li>
+                  <li><span >3-4</span> Works but could put in more effort</li>
+                  <li><span >5-6</span> Works very well</li>
+              </ul>
+              <div class="rating">
+                  <label><input type="radio" name="team_work" value="1"><span>1</span></label>
+                  <label><input type="radio" name="team_work" value="2"><span>2</span></label>
+                  <label><input type="radio" name="team_work" value="3"><span>3</span></label>
+                  <label><input type="radio" name="team_work" value="4"><span>4</span></label>
+                  <label><input type="radio" name="team_work" value="5"><span>5</span></label>
+                  <label><input type="radio" name="team_work" value="6"><span>6</span></label>
+              </div>
+          </div>
+
+          <div class="evaluation-block">
+              <h4>Comment</h4>
+              <p>Leave a brief comment for the member</p>
+              <textarea name="comment" id="comment" rows="4" cols="50" [(ngModel)]="evaluationComment"></textarea>
+          </div>
+
+          <div class="w-100 d-flex justify-content-center text-center">
+            <span class="text-danger" *ngIf="isValid">Tienes que marcar todas las opciones!</span> <br>
+
+            <button class="btn btn-primary w-50 mt-3" (click)="addEvaluationData(user.user.idUser, project.idProject); updateActiveUserById(user.user.idUser, project.idProject)">Submit</button>
+          </div>
+
+
+          </div>
+
+        </div>
+      </div>
+
+    </ng-container>
+
+
+    <div class="add-user" *ngIf="activeMembers < vacancy" (click)="openModal()">
+      <div class="circle-icon">
+        <p class="plus">+</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <div class="template eight">
+        <div class="white ">
+          <div class="white">
+            <div class="div-characteristics">
+              <button (click)="deselectAllCheckboxes()" (click)="search()">Reset All</button>
+              <div class="characteristics">
+                <div *ngFor="let cat of categories">
+                  <h6>{{cat.name}}</h6>
+                  <label *ngFor="let charact of getFilteredCharacteristics(cat.idCategory)">
+                    <input #checkbox class="checkbox" type="checkbox" [value]="charact.idCharacteristic" name="characteristic"
+                           (change)="onChangeCharacteristic(charact.idCharacteristic, $event); applySelectedCharacteristics()" />
+                    {{charact.name}}
+                  </label>
+                  <a class="toggle" *ngIf="!isCategoryExpanded(cat.idCategory)" (click)="toggleCategoryExpansion(cat.idCategory)">
+                    Mostrar más
+                  </a>
+                  <a class="toggle" *ngIf="isCategoryExpanded(cat.idCategory)" (click)="toggleCategoryExpansion(cat.idCategory); search()">
+                    Mostrar menos
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="div-container">
+          <div id="searchbar">
+            <input type="text" [(ngModel)]="terminoBusqueda" (input)="search()" placeholder="Search for the user by name" />
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+          </div>
+          <div class="template three overflow">
+            <ng-container *ngFor="let user of addUserProjects">
+              <div class="user-div" [style.border]="getUserBorderStyle(user.role.name)" *ngIf="user.role.name != 'manager'">
+                <div class="two ico-photo">
+                  <div id="profile-pic"[routerLink]="['/user', user.idUser]">
+                    <img src="../../assets/img/user.png" alt="" />
+                  </div>
+                  <i class="bi bi-plus" (click)="addMember( user.idUser, project.idProject)"></i>
+
+                </div>
+
+
+                <p>{{ user.name }}</p>
+                <p>{{ user.email }}</p>
+                <p>{{ user.das }}</p>
+              </div>
+              <!-- <div class="user-div">
+                <a [routerLink]="['/user', user.idUser]">
+                  <div id="profile-pic">
+                    <img src="../../assets/img/user.png" alt="" />
+                  </div>
+                </a>
+                <p>{{ user.name }}</p>
+                <p>{{ user.email }}</p>
+                <p>{{ user.das }}</p>
+                <i class="bi bi-plus" (click)="addMember( user.idUser, project.idProject)"></i>
+              </div> -->
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
